@@ -1,0 +1,6 @@
+<resources>
+    <!-- app主色调 -->
+    <color name="orange_ed6d00">#ed6d00</color>
+    <color name="light_blue">#36a7ef</color>
+    <color name="tag_blue">#66BEFB</color>
+</resources>

@@ -1,0 +1,3 @@
+include ':app'
+include ':xrecyclerview1.2.7'
+include ':swiperecyclerview'
