@@ -38,7 +38,5 @@
     <declare-styleable name="xrecyclerview">
         <!-- 第一次进入是否需要下拉刷新 -->
         <attr name="scrollWhenFirst" format="boolean"/>
-        <!-- 是否需要显示新微商logo -->
-        <attr name="showArrow" format="boolean"/>
     </declare-styleable>
 </resources>

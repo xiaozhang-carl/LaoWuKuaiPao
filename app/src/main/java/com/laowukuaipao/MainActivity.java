@@ -11,13 +11,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.laowukuaipao.databinding.ActivityMainBinding;
+import com.laowukuaipao.databinding.ActivityWebBinding;
 import com.xiaozhang.sr.SwipeRefreshContract;
 import com.xiaozhang.sr.SwipeRefreshDelegate;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshContract.IFSwipeRefresh{
 
-    private ActivityMainBinding mBinding;
+    private ActivityWebBinding mBinding;
     //下拉刷新
     private SwipeRefreshDelegate mSwipeRefreshDelegate;
     //webview

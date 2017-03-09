@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#f0f0f0"
-    tools:context="ff_wms_rf.feifanzhixing.com.ffdmcpulltorefreshdemo.jd.JdActivity"
     tools:showIn="@layout/activity_main">
 
 
-    <ff_wms_rf.feifanzhixing.com.ffdmcpulltorefreshdemo.jd.JdRefreshLayout
+    <com.laowukuaipao.jd.JdRefreshLayout
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/test_recycler_view_frame"
         android:layout_width="match_parent"
@@ -28,5 +27,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"/>
-    </ff_wms_rf.feifanzhixing.com.ffdmcpulltorefreshdemo.jd.JdRefreshLayout>
+    </com.laowukuaipao.jd.JdRefreshLayout>
 </FrameLayout>

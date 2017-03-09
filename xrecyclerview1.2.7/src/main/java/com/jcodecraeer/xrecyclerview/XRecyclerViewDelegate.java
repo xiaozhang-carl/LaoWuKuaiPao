@@ -123,6 +123,7 @@ public class XRecyclerViewDelegate<T> extends RecyclerViewContract.RVPresenter<T
             mEmptyView = emptyView;
             //空布局添加到父布局
             mFrameLayout.addView(mEmptyView);
+//            mRecyclerView.setEmptyView(mEmptyView);
         }
     }
 
@@ -360,6 +361,7 @@ public class XRecyclerViewDelegate<T> extends RecyclerViewContract.RVPresenter<T
             } else {
                 mAdapter.addNewList(position + 2, list);
             }
+            showEmptyView();
         }
 
     }

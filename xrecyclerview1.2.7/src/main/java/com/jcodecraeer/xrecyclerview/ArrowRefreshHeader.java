@@ -69,6 +69,7 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
          */
         if (scrollWhenFirst) {
             smoothScrollTo(mMeasuredHeight);
+            setState(STATE_REFRESHING);
         }
 
     }
@@ -96,14 +97,14 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 break;
             case STATE_RELEASE_TO_REFRESH:
                 if (mState != STATE_RELEASE_TO_REFRESH) {
-                    mArrowImageView.clearAnimation();
-                    if (!mAnimation.isRunning()) {
-                        mAnimation.start();
-                    }
                     mStatusTextView.setText(R.string.listview_header_hint_release);
                 }
                 break;
             case STATE_REFRESHING:
+                mArrowImageView.clearAnimation();
+                if (!mAnimation.isRunning()) {
+                    mAnimation.start();
+                }
                 mStatusTextView.setText(R.string.refreshing);
                 break;
             case STATE_DONE:

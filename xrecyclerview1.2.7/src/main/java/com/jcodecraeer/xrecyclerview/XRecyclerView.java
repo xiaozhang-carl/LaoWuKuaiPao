@@ -35,11 +35,8 @@ public class XRecyclerView extends RecyclerView {
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002;
     private static List<Integer> sHeaderTypes = new ArrayList<>();//每个header必须有不同的type,不然滚动的时候顺序会变化
-    private int mPageCount = 0;
-    //adapter没有数据的时候显示,类似于listView的emptyView
-    private View mEmptyView;
+    //列表底部View
     private View mFootView;
-    private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
 
     //第一次进入是否需要下拉刷新
@@ -99,11 +96,6 @@ public class XRecyclerView extends RecyclerView {
             return false;
         }
     }
-
-    public void setFootView(final View view) {
-        mFootView = view;
-    }
-
 
 
     //是否添加了底部
@@ -192,17 +184,11 @@ public class XRecyclerView extends RecyclerView {
     }
 
 
-    public void dataObserverOnChanged() {
-        mDataObserver.onChanged();
-    }
-
-
     @Override
     public void setAdapter(Adapter adapter) {
         mWrapAdapter = new WrapAdapter(adapter);
         super.setAdapter(mWrapAdapter);
-        adapter.registerAdapterDataObserver(mDataObserver);
-        mDataObserver.onChanged();
+        mWrapAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -238,6 +224,7 @@ public class XRecyclerView extends RecyclerView {
             }
         }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -290,61 +277,6 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-
-
-    private class DataObserver extends RecyclerView.AdapterDataObserver {
-        @Override
-        public void onChanged() {
-            Adapter<?> adapter = getAdapter();
-            if (adapter != null && mEmptyView != null) {
-                int emptyCount = 0;
-                if (pullRefreshEnabled) {
-                    emptyCount++;
-                }
-                if (loadingMoreEnabled) {
-                    emptyCount++;
-                }
-                if (adapter.getItemCount() == emptyCount) {
-                    mEmptyView.setVisibility(View.VISIBLE);
-//                    XRecyclerView.this.setVisibility(View.INVISIBLE);
-                } else {
-                    mEmptyView.setVisibility(View.GONE);
-//                    XRecyclerView.this.setVisibility(View.INVISIBLE);
-                }
-            }
-            if (mWrapAdapter != null) {
-                mWrapAdapter.notifyDataSetChanged();
-            }
-        }
-
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeInserted(positionStart, itemCount);
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeChanged(positionStart, itemCount);
-        }
-
-        @Override
-        public void onItemRangeChanged(int positionStart, int itemCount, Object payload) {
-            mWrapAdapter.notifyItemRangeChanged(positionStart, itemCount, payload);
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            mWrapAdapter.notifyItemRangeRemoved(positionStart, itemCount);
-        }
-
-        @Override
-        public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-            mWrapAdapter.notifyItemMoved(fromPosition, toPosition);
-        }
-    }
-
-    ;
 
     public class WrapAdapter extends RecyclerView.Adapter<ViewHolder> {
 
