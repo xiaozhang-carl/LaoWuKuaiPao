@@ -4,18 +4,39 @@
     <!--网络访问的权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".KuaiPao">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+        <activity
+            android:name=".jd.JdActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".tmall.TmallActivity"
+            android:label="@string/title_activity_tm"
+            android:theme="@style/AppTheme.NoActionBar">
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+        </activity>
+        <activity
+            android:name=".KuaiPao"
+            android:label="@string/title_activity_tm"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 
 </manifest>

@@ -181,7 +181,7 @@ public class XRecyclerViewDelegate<T> extends RecyclerViewContract.RVPresenter<T
         //头部加载小圆点,主题黄
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
         //底部小方块
-        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.LineScaleParty);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
     }
 
 
@@ -367,13 +367,8 @@ public class XRecyclerViewDelegate<T> extends RecyclerViewContract.RVPresenter<T
 
     //刷新完成,隐藏进度条...
     public void refreshComplete() {
-        if (mPage <= 1) {
-            mRecyclerView.refreshComplete();
-        } else {
-            mRecyclerView.loadMoreComplete();
-        }
-
-        mRecyclerView.dataObserverOnChanged();
+        mRecyclerView.refreshComplete();
+        mRecyclerView.loadMoreComplete();
     }
 
     //清全部数据

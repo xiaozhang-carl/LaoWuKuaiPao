@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshContr
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_web);
         initView();
         refreshData();
     }

@@ -359,6 +359,7 @@ public class SwipeRecyclerViewDelegate<T> extends RecyclerViewContract.RVPresent
                 mAdapter.addNewList(position + 1, list);
             }
             Log.i(TAG, "mPage =" + mPage + ",refreshComplete()");
+            refreshComplete();
         }
 
     }

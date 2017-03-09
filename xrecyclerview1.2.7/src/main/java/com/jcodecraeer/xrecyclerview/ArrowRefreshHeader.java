@@ -2,46 +2,33 @@ package com.jcodecraeer.xrecyclerview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
-
-import java.util.Date;
 
 public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeader {
 
     private LinearLayout mContainer;
+
     private ImageView mArrowImageView;
-    private SimpleViewSwitcher mProgressBar;
+
     private TextView mStatusTextView;
+
     private int mState = STATE_NORMAL;
 
-    private TextView mHeaderTimeView;
-
-    private Animation mRotateUpAnim;
-    private Animation mRotateDownAnim;
-
-    private static final int ROTATE_ANIM_DURATION = 180;
+    private AnimationDrawable mAnimation;
 
     public int mMeasuredHeight;
 
-    //是否需要显示新微商logo
-    public boolean showArrow = true;
-
-    public ArrowRefreshHeader(Context context, boolean scrollWhenFirst, boolean showArrow) {
+    public ArrowRefreshHeader(Context context, boolean scrollWhenFirst) {
         super(context);
-        this.showArrow = showArrow;
         initView(scrollWhenFirst);
     }
 
@@ -69,34 +56,13 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         mArrowImageView = (ImageView) findViewById(R.id.listview_header_arrow);
         mStatusTextView = (TextView) findViewById(R.id.refresh_status_textview);
 
-
-        //init the progress view
-        mProgressBar = (SimpleViewSwitcher) findViewById(R.id.listview_header_progressbar);
-        AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(getContext());
-        progressView.setIndicatorColor(0xffB5B5B5);
-        progressView.setIndicatorId(ProgressStyle.BallSpinFadeLoader);
-        mProgressBar.setView(progressView);
-
-
-        mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        mRotateUpAnim.setDuration(ROTATE_ANIM_DURATION);
-        mRotateUpAnim.setFillAfter(true);
-        mRotateDownAnim = new RotateAnimation(-180.0f, 0.0f,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
-        mRotateDownAnim.setFillAfter(true);
-
-        mHeaderTimeView = (TextView) findViewById(R.id.last_refresh_time);
         measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         mMeasuredHeight = getMeasuredHeight();
 
-        //
-        if (showArrow) {
-            mArrowImageView.setVisibility(VISIBLE);
-        } else {
-            mArrowImageView.setVisibility(GONE);
-        }
+        //隐藏商品logo,开启跑步动画
+
+        mArrowImageView.setBackgroundResource(R.drawable.runningman);
+        mAnimation = (AnimationDrawable) mArrowImageView.getBackground();
 
         /**
          * ToDo: 这一句是为了打开页面,就显示下拉刷新的效果
@@ -109,61 +75,30 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
 
     public void setProgressStyle(int style, int color) {
-        if (style == ProgressStyle.SysProgress) {
-            mProgressBar.setView(new ProgressBar(getContext(), null, android.R.attr.progressBarStyle));
-        } else {
-            AVLoadingIndicatorView progressView = new AVLoadingIndicatorView(this.getContext());
-            progressView.setIndicatorColor(color);
-            progressView.setIndicatorId(style);
-            mProgressBar.setView(progressView);
-        }
+
     }
 
-    public void setArrowImageView(int resid) {
-        mArrowImageView.setImageResource(resid);
-    }
 
-    public void setState(int state) {
-        if (state == mState) return;
 
-        if (state == STATE_REFRESHING) {    // 显示进度
-            if (showArrow) {
-                mArrowImageView.clearAnimation();
-                mArrowImageView.setVisibility(View.INVISIBLE);
-            }
-            mProgressBar.setVisibility(View.VISIBLE);
-        } else if (state == STATE_DONE) {
-            if (showArrow) {
-                mArrowImageView.setVisibility(View.INVISIBLE);
-            }
-            mProgressBar.setVisibility(View.INVISIBLE);
-        } else {    // 显示箭头图片
-            if (showArrow) {
-                mArrowImageView.setVisibility(View.VISIBLE);
-            }
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
-
-        switch (state) {
+    public void setState(int newState) {
+        if (newState == mState) return;
+        Log.i("state","newState = "+newState);
+        Log.i("state","mState = "+mState);
+        //判断当前最新状态
+        switch (newState) {
             case STATE_NORMAL:
-                if (mState == STATE_RELEASE_TO_REFRESH) {
-                    if (showArrow) {
-                        mArrowImageView.startAnimation(mRotateDownAnim);
-                    }
-
-                }
                 if (mState == STATE_REFRESHING) {
-                    if (showArrow) {
-                        mArrowImageView.clearAnimation();
-                    }
+                    mArrowImageView.clearAnimation();
                 }
                 mStatusTextView.setText(R.string.listview_header_hint_normal);
+                mArrowImageView.setBackgroundResource(R.drawable.runningman);
+                mAnimation = (AnimationDrawable) mArrowImageView.getBackground();
                 break;
             case STATE_RELEASE_TO_REFRESH:
                 if (mState != STATE_RELEASE_TO_REFRESH) {
-                    if (showArrow) {
-                        mArrowImageView.clearAnimation();
-                        mArrowImageView.startAnimation(mRotateUpAnim);
+                    mArrowImageView.clearAnimation();
+                    if (!mAnimation.isRunning()) {
+                        mAnimation.start();
                     }
                     mStatusTextView.setText(R.string.listview_header_hint_release);
                 }
@@ -173,11 +108,16 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
                 break;
             case STATE_DONE:
                 mStatusTextView.setText(R.string.refresh_done);
+                //停止动画
+                if (mAnimation.isRunning()) {
+                    mAnimation.stop();
+                }
+                mArrowImageView.setBackgroundResource(R.mipmap.a2a);
                 break;
             default:
         }
 
-        mState = state;
+        mState = newState;
     }
 
     public int getState() {
@@ -186,7 +126,6 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
 
     @Override
     public void refreshComplete() {
-//        mHeaderTimeView.setText(friendlyTime(new Date()));
         setState(STATE_DONE);
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -267,31 +206,6 @@ public class ArrowRefreshHeader extends LinearLayout implements BaseRefreshHeade
         animator.start();
     }
 
-    public static String friendlyTime(Date time) {
-        //获取time距离当前的秒数
-        int ct = (int) ((System.currentTimeMillis() - time.getTime()) / 1000);
 
-        if (ct == 0) {
-            return "刚刚";
-        }
-
-        if (ct > 0 && ct < 60) {
-            return ct + "秒前";
-        }
-
-        if (ct >= 60 && ct < 3600) {
-            return Math.max(ct / 60, 1) + "分钟前";
-        }
-        if (ct >= 3600 && ct < 86400)
-            return ct / 3600 + "小时前";
-        if (ct >= 86400 && ct < 2592000) { //86400 * 30
-            int day = ct / 86400;
-            return day + "天前";
-        }
-        if (ct >= 2592000 && ct < 31104000) { //86400 * 30
-            return ct / 2592000 + "月前";
-        }
-        return ct / 31104000 + "年前";
-    }
 
 }

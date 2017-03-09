@@ -42,11 +42,8 @@ public class XRecyclerView extends RecyclerView {
     private final RecyclerView.AdapterDataObserver mDataObserver = new DataObserver();
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
 
-
     //第一次进入是否需要下拉刷新
     public boolean scrollWhenFirst = true;
-    //是否需要显示新微商logo
-    public boolean showArrow = true;
 
     public XRecyclerView(Context context) {
         this(context, null);
@@ -60,14 +57,13 @@ public class XRecyclerView extends RecyclerView {
         super(context, attrs, defStyle);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.xrecyclerview);
         scrollWhenFirst = a.getBoolean(R.styleable.xrecyclerview_scrollWhenFirst, true);
-        showArrow = a.getBoolean(R.styleable.xrecyclerview_showArrow, true);
         a.recycle();
         init();
     }
 
     private void init() {
         if (pullRefreshEnabled) {
-            mRefreshHeader = new ArrowRefreshHeader(getContext(), scrollWhenFirst, showArrow);
+            mRefreshHeader = new ArrowRefreshHeader(getContext(), scrollWhenFirst);
             mRefreshHeader.setProgressStyle(mRefreshProgressStyle, 0xffF3A536);
         }
         LoadingMoreFooter footView = new LoadingMoreFooter(getContext());
@@ -195,24 +191,11 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    public void setArrowImageView(int resId) {
-        if (mRefreshHeader != null) {
-            mRefreshHeader.setArrowImageView(resId);
-        }
-    }
-
-    public void setEmptyView(View emptyView) {
-        this.mEmptyView = emptyView;
-        mDataObserver.onChanged();
-    }
 
     public void dataObserverOnChanged() {
         mDataObserver.onChanged();
     }
 
-    public View getEmptyView() {
-        return mEmptyView;
-    }
 
     @Override
     public void setAdapter(Adapter adapter) {
@@ -307,18 +290,7 @@ public class XRecyclerView extends RecyclerView {
         }
     }
 
-    //https://github.com/jianghejie/XRecyclerView/issues/69
-    public void notifyItemChanged(int position) {
-        if (mWrapAdapter != null) {
-            mWrapAdapter.notifyItemChanged(position);
-        }
-    }
 
-    public void notifyDataSetChanged() {
-        if (mWrapAdapter != null) {
-            mWrapAdapter.notifyDataSetChanged();
-        }
-    }
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {
         @Override

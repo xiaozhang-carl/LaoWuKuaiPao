@@ -3,8 +3,8 @@ package com.laowukuaipao;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,11 +65,12 @@ public class KuaiPao extends Activity implements RecyclerViewContract.IFAdapter<
     }
 
     List<String> list = new ArrayList<>();
-    int page=0;
+    int page = 0;
 
     @Override
     public void loadData() {
         mXRecyclerViewDelegate.setPage(page++);
+        list = new ArrayList<>();
         list.add("a1");
         list.add("a2");
         list.add("a3");
@@ -77,11 +78,26 @@ public class KuaiPao extends Activity implements RecyclerViewContract.IFAdapter<
         list.add("a5");
         list.add("a6");
         list.add("a7");
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
+
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
                 mXRecyclerViewDelegate.render(list);
             }
-        }, 1000);
+        }.execute();
 
     }
 }
