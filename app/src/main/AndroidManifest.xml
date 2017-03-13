@@ -21,6 +21,12 @@
 
         </activity>
         <activity
+            android:name=".ListViewActivity"
+            android:label="@string/title_activity_tm"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
             android:name=".KuaiPao"
             android:label="@string/title_activity_tm"
             android:theme="@style/AppTheme.NoActionBar">
@@ -31,9 +37,9 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

@@ -1,3 +1,4 @@
 include ':app'
+include ':cptr_demo'
 include ':xrecyclerview1.2.7'
 include ':swiperecyclerview'

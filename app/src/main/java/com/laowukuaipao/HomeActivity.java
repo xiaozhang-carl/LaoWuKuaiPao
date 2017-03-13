@@ -48,6 +48,13 @@ public class HomeActivity extends AppCompatActivity {
                 toActivity(KuaiPao.class);
             }
         });
+        findViewById(R.id.btn_listview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toActivity(ListViewActivity.class);
+            }
+        });
+        System.currentTimeMillis();
     }
 
     /**

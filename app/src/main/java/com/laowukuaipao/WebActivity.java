@@ -15,7 +15,7 @@ import com.laowukuaipao.databinding.ActivityWebBinding;
 import com.xiaozhang.sr.SwipeRefreshContract;
 import com.xiaozhang.sr.SwipeRefreshDelegate;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshContract.IFSwipeRefresh{
+public class WebActivity extends AppCompatActivity implements SwipeRefreshContract.IFSwipeRefresh{
 
     private ActivityWebBinding mBinding;
     //下拉刷新
