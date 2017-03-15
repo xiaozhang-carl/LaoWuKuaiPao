@@ -54,7 +54,7 @@ public class KuaiPao extends Activity implements RecyclerViewContract.IFAdapter<
         binding1.text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.show(KuaiPao.this, "position=" + position);
+                ToastUtil.show(KuaiPao.this, "position = " + position);
             }
         });
     }
